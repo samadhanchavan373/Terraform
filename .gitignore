@@ -1,2 +1,6 @@
 terraform.exe
 .terraform/
+*.tfstate
+*.tfstate.backup
+*.tfvars
+*.tfplan

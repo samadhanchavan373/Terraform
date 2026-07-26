@@ -1,37 +1,26 @@
-locals {
-  resource_group_location  = "North Europe"
-  virtual_network_location = "Central India"
-  virtual_network_address_prefix = {
-    name             = "app-vnet"
-    address_prefixes = ["10.0.0.0/16"]
-  }
-  subnet_list = [
-    {
-      name             = "websubnet1"
-      address_prefixes = ["10.0.0.0/24"]
-    },
-    {
-      name             = "websubnet2"
-      address_prefixes = ["10.0.2.0/24"]
+locals{
+    resource_grp_location = "Central India"
+
+    production_tags = {
+        code = "${var.tags.commontags.department}-${var.tags.commontags.contact}"
+        tier = "${var.tags.commontags.department}"
     }
-  ]
 
-  network_security_group_rules = [
-    {
-      priority               = 301
-      destination_port_range = "3389"
+    database_details = flatten([
+        for server_key, server in var.db_app_environemnt.production.server : [
+            for database_key, database in server.databases : {
+                server_name     = server_key
+                database_name   = database_key
+                database_sku    = database.sku
+                database_sample = database.sampledb
+            }
+        ]
+    ])
 
-    },
+     network_security_group_rules = [
     {
-      priority               = 303
-      destination_port_range = "80"
-    },
-    {
-      priority               = 304
+      priority               = 300
       destination_port_range = "22"
     }
   ]
-
-  linux_vm_size = "B2s_v2"
 }
-

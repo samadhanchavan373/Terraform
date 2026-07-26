@@ -1,35 +1,60 @@
-/*variable "vmname"{
- type = string
- description = "Name of the virtual machine"
+variable "webapp-environment" {
+  type = map(object(
+    {
+      serviceplan = map(object(
+        {
+            sku = string
+            os = string
+        }
+      ))
+      serviceapp = map(string)
+    }
+  ))
+}
+
+variable "tags" {
+  type = map(object(
+    {
+      department = string
+      contact = string
+    }
+  ))
+}
+
+variable "webapp-slots"{
+  type = list(string)
 }
 
 
 
-
-
-*/
-
-variable "admin_username" {
-  type        = string
-  description = "Username for the administrator account"
+variable "db_app_environemnt" {
+  type = map(object({
+     server = map(object({
+      databases = map(object(
+        {
+           sku = string
+           sampledb = string
+        }))
+     }))
+  }))
 }
 
-variable "admin_password" {
-  type        = string
-  description = "Password for the administrator account"
-  sensitive   = true
+variable "app-setup" {
+  type = list(string)
 }
 
-variable "vm_size" {
-  type        = string
-  description = "Size of the virtual machine"
-  default     = "Standard_B2as_v2"
-}
 
-/*variable "network_interface_count" {
-  type        = number
-  description = "Number of network interfaces to create"
-}*/
+
+variable "web-environment"{
+  type = map(object({
+
+    serviceplan = map(object({
+      sku = string
+      os_type = string
+    }))
+    serviceapp = map(string)
+  }))
+}
 
 
 
@@ -47,5 +72,24 @@ variable "app-environment" {
               Public_ip_name = string
           }))
       }))
+      serviceplan = map(object({
+        sku = string
+        os_type = string
+
+      }))
+      serviceapp = map(string)
   }))
+}
+
+variable "admin_password" {
+  type        = string
+  description = "Password for the administrator account"
+  sensitive   = true
+}
+
+
+variable "vm_size" {
+  type        = string
+  description = "Size of the virtual machine"
+  default     = "Standard_B2as_v2"
 }

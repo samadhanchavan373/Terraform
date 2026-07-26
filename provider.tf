@@ -5,3 +5,10 @@ provider "azurerm" {
   tenant_id = "d4f4c1e6-b689-400c-bd50-f72517748f44"
   subscription_id = "2829a2c8-e971-4097-a3eb-91ee1afb973f"
 }
+
+
+provider "aws" {
+  region = "us-east-1"
+  access_key = "erew"
+  secret_key = "erwe"
+}

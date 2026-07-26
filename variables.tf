@@ -85,6 +85,7 @@ variable "admin_password" {
   type        = string
   description = "Password for the administrator account"
   sensitive   = true
+  default = "testTEST@1234"
 }
 
 

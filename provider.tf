@@ -6,9 +6,5 @@ provider "azurerm" {
   subscription_id = "2829a2c8-e971-4097-a3eb-91ee1afb973f"
 }
 
+provider "local" {}
 
-provider "aws" {
-  region = "us-east-1"
-  access_key = "erew"
-  secret_key = "erwe"
-}

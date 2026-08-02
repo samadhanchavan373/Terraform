@@ -23,6 +23,7 @@ variable "vnet_subnet_count" {
   type        = number
 }
 
+
 variable "public-ip-count" {
   description = "Number of public IPs to create"
   type        = number
@@ -40,10 +41,3 @@ variable "network_security_group_rules" {
     destination_port_range = string
   }))
 }
-
-variable "virtual_machine_count" {
-  description = "Number of virtual machines to create"
-  type        = number
-}
-
-

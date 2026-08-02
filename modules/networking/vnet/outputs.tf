@@ -13,3 +13,7 @@ output "virtual_network_id" {
 output "network_interface_private_ip_addresses" {
   value = azurerm_network_interface.network-interfaces[*].private_ip_address
 }
+
+output "virtual_network_subnet_id" {
+  value = azurerm_subnet.network-subnets[*].id
+}

@@ -18,15 +18,6 @@ module "network" {
   depends_on = [module.resource-group] #imp
 }
 
-module "machines" {
-  source = "./modules/compute/virtualmachines"
-  resource_grp_name = var.resource_grp_name
-  resource_grp_location = var.resource_grp_location
-  virtual_machine_count = var.virtual_machine_count
-  virtual_network_interfaces_ids = module.network.virtual_network_interfaces_ids #imp
-  virtual_machines_ip_addresses = module.network.public_ip_addresses #imp
-  depends_on = [module.network] #imp
-}
 
 module "loadbalancer" {
   source = "./modules/networking/loadbalancer"
@@ -36,4 +27,13 @@ module "loadbalancer" {
   virtual_network_id = module.network.virtual_network_id #imp
   network_interface_private_ip_addresses = module.network.network_interface_private_ip_addresses #imp
   depends_on = [module.network] #imp
+}
+
+module "virtual-machines-scaleset" {
+  source = "./modules/compute/scalesets"
+  resource_grp_name = var.resource_grp_name
+  resource_grp_location = var.resource_grp_location
+  virtual_network_subnet_id = module.network.virtual_network_subnet_id
+  backend_address_pool_id = module.loadbalancer.backend_address_pool_id
+  depends_on = [module.loadbalancer] #imp
 }

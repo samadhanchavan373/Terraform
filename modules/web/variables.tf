@@ -3,10 +3,6 @@ variable "resource_grp_name" {
   type        = string
 }
 
-variable "resource_grp_location" {
-  description = "Location of the resource group"
-  type        = string
-}
 
 variable "web-environment"{
   type = map(object({
@@ -14,12 +10,5 @@ variable "web-environment"{
     serviceplan_plan_sku = string
     serviceplan_plan_location = string
     webapp_name = string
-  }))
-}
-
-variable "traffic-manager-endpoints" {
-  type = map(object({
-    endpoint_priority = string
-    endpoint_weight = string
   }))
 }

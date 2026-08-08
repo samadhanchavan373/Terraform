@@ -1,39 +1,30 @@
 
 module "resource-group" {
-  source = "./modules/general/resourcegroup"
-  resource_grp_name = var.resource_grp_name
+  source                = "./modules/general/resourcegroup"
+  resource_grp_name     = var.resource_grp_name
   resource_grp_location = var.resource_grp_location
 }
 
-module "network" {
-  source = "./modules/networking/vnet"
-  resource_grp_name = var.resource_grp_name
-  resource_grp_location = var.resource_grp_location
-  vnet_name = var.vnet_name
-  vnet_address_prefix = var.vnet_address_prefix
-  vnet_subnet_count = var.vnet_subnet_count
-  network-interfaces-count = var.network-interfaces-count
-  public-ip-count = var.public-ip-count
-  network_security_group_rules = var.network_security_group_rules
-  depends_on = [module.resource-group] #imp
+module "web-app" {
+  source            = "./modules/web"
+  resource_grp_name = module.resource-group.resource_group_name
+  web-environment   = var.web-environment
 }
 
-
-module "loadbalancer" {
-  source = "./modules/networking/loadbalancer"
-  resource_grp_name = var.resource_grp_name
-  resource_grp_location = var.resource_grp_location
-  virtual_machine_count = var.virtual_machine_count
-  virtual_network_id = module.network.virtual_network_id #imp
-  network_interface_private_ip_addresses = module.network.network_interface_private_ip_addresses #imp
-  depends_on = [module.network] #imp
+module "traffic-manager" {
+  source                     = "./modules/networking/trafficmanager"
+  resource_grp_name          = module.resource-group.resource_group_name
+  resource_grp_location      = var.resource_grp_location
+  traffic-manager-endpoints  = var.traffic-manager-endpoints
+  webapp-ids                 = module.web-app.webapp-ids
+  webapp-hostnames           = module.web-app.webapp-hostnames
+  secondary-app-service-name = module.web-app.secondary-app-service-name
 }
 
-module "virtual-machines-scaleset" {
-  source = "./modules/compute/scalesets"
-  resource_grp_name = var.resource_grp_name
-  resource_grp_location = var.resource_grp_location
-  virtual_network_subnet_id = module.network.virtual_network_subnet_id
-  backend_address_pool_id = module.loadbalancer.backend_address_pool_id
-  depends_on = [module.loadbalancer] #imp
+output "web-app-ids" {
+  value = module.web-app.webapp-ids
+}
+
+output "weba-app-hostnames" {
+  value = module.web-app.webapp-hostnames
 }

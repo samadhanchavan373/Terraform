@@ -8,18 +8,22 @@ variable "resource_grp_location" {
   type        = string
 }
 
-variable "web-environment"{
-  type = map(object({
-    serviceplan_plan_os_type = string
-    serviceplan_plan_sku = string
-    serviceplan_plan_location = string
-    webapp_name = string
-  }))
-}
 
 variable "traffic-manager-endpoints" {
   type = map(object({
     endpoint_priority = string
-    endpoint_weight = string
+    endpoint_weight   = string
   }))
+}
+
+variable "webapp-ids" {
+  type = list(string)
+}
+
+variable "webapp-hostnames" {
+  type = list(string)
+}
+
+variable "secondary-app-service-name" {
+  type = string
 }

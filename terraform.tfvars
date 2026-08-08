@@ -1,21 +1,30 @@
 resource_grp_name = "app-grp-lb"
-resource_grp_location = "Central India"
+resource_grp_location = "North Europe"
 
-vnet_name = "app-network"
-vnet_address_prefix = "10.0.0.0/16"
-vnet_subnet_count = 1
-public-ip-count = 0
-network-interfaces-count = 0
+web-environment = {
+      "central-India-app-service-plan" = {
+        serviceplan_plan_os_type = "Windows"
+        serviceplan_plan_sku = "S1"
+        serviceplan_plan_location = "Central India"
+        webapp_name = "central-India-app-service-samadhan"
+      },
+     "North-Europe-app-service-plan" = {
+        serviceplan_plan_os_type = "Windows"
+        serviceplan_plan_sku = "S1"
+        serviceplan_plan_location = "North Europe"
+        webapp_name = "North-Europe-app-service-samadhan"
+      }
+    }
 
-network_security_group_rules = [
-  {
-    priority               = 100
-    destination_port_range = "22"
-  },
-  {
-    priority               = 200
-    destination_port_range = "80"
+ traffic-manager-endpoints = {
+  "primary-endpoint" = {
+    endpoint_priority = "1"
+    endpoint_weight = "100"
+    endpoint_target_resource_id = "azurerm_public_ip.example.id"
   }
-]
-
-virtual_machine_count = 0
+  "secondary-endpoint" = {
+    endpoint_priority = "2"
+    endpoint_weight = "100"
+    endpoint_target_resource_id = "azurerm_public_ip.example.id"
+  }
+ }
